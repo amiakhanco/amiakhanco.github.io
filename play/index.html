@@ -2,148 +2,375 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="robots" content="noindex">
-<title>Growing Up in the '60s: Interactive Sample | Amia Khan</title>
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="'60s Puzzles">
+<meta name="theme-color" content="#1f6f78">
+<meta name="description" content="Free '60s word search and coloring game for iPad and tablets, by Amia Khan. Earn points, use hints, and color with your own palette.">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>'60s Puzzles: Free Word Search & Coloring | Amia Khan</title>
 <style>
-:root{--teal:#1f6f78;--teal-d:#164f56;--orange:#e07a2e;--mustard:#e3b23c;--cream:#fbf4e6;--ink:#2a2a2a}
+:root{--teal:#1f6f78;--teal-d:#164f56;--orange:#e07a2e;--mustard:#e3b23c;--cream:#fbf4e6;--ink:#2a2a2a;--fs:1}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,"Times New Roman",serif}
-header{background:var(--teal);color:#fff;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-header h1{font-size:22px;margin:0;font-weight:700}
-header small{display:block;font-size:14px;opacity:.85;font-family:system-ui,sans-serif}
-nav{display:flex;gap:8px}
-nav button{font:600 18px system-ui,sans-serif;border:0;border-radius:999px;padding:12px 20px;background:rgba(255,255,255,.15);color:#fff;cursor:pointer}
-nav button.on{background:var(--mustard);color:var(--ink)}
-main{max-width:1100px;margin:0 auto;padding:16px}
-.page{display:none}.page.on{display:block}
+html,body{margin:0;background:var(--cream);color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:calc(17px*var(--fs))}
+body.lp{--fs:1.25}
+button{font-family:system-ui,-apple-system,sans-serif;cursor:pointer}
+header{background:var(--teal);color:#fff;padding:12px 16px;padding-top:max(12px,env(safe-area-inset-top));display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:10px}
+.brand h1{font-size:1.25em;margin:0}
+.brand small{display:block;font:0.8em system-ui,sans-serif;opacity:.85}
+.hbtn{font-weight:700;font-size:.95em;border:0;border-radius:999px;padding:10px 16px;background:rgba(255,255,255,.16);color:#fff}
+.pts{background:var(--mustard);color:var(--ink);border-radius:999px;padding:8px 14px;font:700 1em system-ui,sans-serif;white-space:nowrap}
+.hright{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+main{max-width:1120px;margin:0 auto;padding:16px}
+.view{display:none}.view.on{display:block}
+h2{color:var(--teal-d);font-size:1.4em;margin:6px 0 10px}
+.lead{font-size:1.05em;line-height:1.5;margin:0 0 14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:22px}
+.card{background:#fff;border-radius:16px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.07);border:0;text-align:left;font-family:inherit;color:inherit;font-size:1em;position:relative}
+.card .tag{display:inline-block;font:700 .75em system-ui,sans-serif;background:var(--cream);color:var(--teal-d);border-radius:999px;padding:4px 10px;margin-bottom:8px}
+.card .tag.book{background:#fde8d6;color:#9a4a10}
+.card .tag.lock{background:#efe6ff;color:#5a3d8a}
+.card h3{margin:0 0 6px;font-size:1.2em}
+.card p{margin:0;font:.9em system-ui,sans-serif;color:#555}
+.card img{width:100%;height:150px;object-fit:contain;background:#fff;margin-bottom:8px}
+.card.locked{opacity:.75}
+.card .badge{position:absolute;top:12px;right:12px;font:700 .8em system-ui,sans-serif;color:#2e7d32}
+.big{font:700 1.05em system-ui,sans-serif;border:0;border-radius:14px;padding:14px 20px;background:var(--orange);color:#fff}
+.big.teal{background:var(--teal)}.big.ghost{background:#fff;color:var(--teal-d);border:2px solid var(--teal)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ownerbox{background:#fff;border:2px dashed var(--mustard);border-radius:16px;padding:16px;margin-bottom:22px}
+/* word search */
 .ws{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;align-items:flex-start}
 .gridwrap{position:relative;background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);touch-action:none;user-select:none;-webkit-user-select:none}
-#grid{display:grid;grid-template-columns:repeat(14,1fr);width:min(92vw,620px);aspect-ratio:1}
-#grid div{display:flex;align-items:center;justify-content:center;font:700 clamp(17px,3.6vw,30px) system-ui,sans-serif;border-radius:50%;position:relative;z-index:1}
-#grid div.got{border-radius:8px}
-#grid div.sel{background:rgba(224,122,46,.35)}
-#grid div.start{background:var(--orange);color:#fff}
-#hl{position:absolute;left:12px;top:12px;width:calc(100% - 24px);height:calc(100% - 24px);pointer-events:none;z-index:2;overflow:visible}
-.words{min-width:240px;max-width:320px}
-.words h2,.color h2{font-size:24px;margin:4px 0 6px;color:var(--teal-d)}
-.fact{font-size:17px;line-height:1.45;background:#fff;border-left:5px solid var(--mustard);padding:10px 12px;border-radius:8px;margin:0 0 12px}
-.words ul{list-style:none;padding:0;margin:0;columns:2;column-gap:14px}
-.words li{font:600 20px system-ui,sans-serif;padding:6px 0}
-.words li.found{text-decoration:line-through;color:#999}
-.hint{font:16px system-ui,sans-serif;color:#555;margin-top:10px}
-.done{display:none;margin-top:14px;background:var(--teal);color:#fff;padding:14px;border-radius:12px;font:600 18px system-ui,sans-serif}
-.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:8px 0 12px}
-.sw{width:46px;flex:0 0 46px;height:46px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;cursor:pointer}
+#grid{display:grid;grid-template-columns:repeat(14,1fr);width:min(92vw,640px);aspect-ratio:1}
+#grid div{display:flex;align-items:center;justify-content:center;font:700 clamp(16px,calc(3.6vw*var(--fs)),calc(30px*var(--fs))) system-ui,sans-serif;border-radius:8px;position:relative}
+#grid div.sel{background:rgba(224,122,46,.4)!important}
+#grid div.start{background:var(--orange)!important;color:#fff}
+#grid div.flash{animation:flash 0.8s ease-in-out 5;background:var(--mustard)!important}
+@keyframes flash{50%{transform:scale(1.35)}}
+#nudge{position:absolute;border:4px solid var(--orange);border-radius:14px;pointer-events:none;display:none;animation:pulse 1s ease-in-out 4}
+@keyframes pulse{50%{opacity:.3}}
+.side{min-width:250px;max-width:340px;flex:1}
+.fact{font-size:1em;line-height:1.45;background:#fff;border-left:5px solid var(--mustard);padding:10px 12px;border-radius:8px;margin:0 0 12px}
+#list{list-style:none;padding:0;margin:0 0 12px;columns:2;column-gap:14px}
+#list li{font:600 1.1em system-ui,sans-serif;padding:5px 0}
+#list li.found{text-decoration:line-through;color:#999}
+#list li.revealed{text-decoration:line-through;color:#bbb;font-style:italic}
+.hints{background:#fff;border-radius:14px;padding:12px;margin:10px 0}
+.hints h4{margin:0 0 8px;font:700 1em system-ui,sans-serif;color:var(--teal-d)}
+.hint{display:flex;justify-content:space-between;align-items:center;width:100%;margin:6px 0;font:600 1em system-ui,sans-serif;border:2px solid var(--teal);background:#fff;color:var(--teal-d);border-radius:12px;padding:10px 12px}
+.hint span{background:var(--cream);border-radius:999px;padding:3px 10px;font-size:.9em}
+.hint.free span{background:#2e7d32;color:#fff}
+.hint:disabled{opacity:.45}
+.small{font:.9em system-ui,sans-serif;color:#555}
+.booklabel{background:#fde8d6;color:#9a4a10;border-radius:10px;padding:8px 12px;font:600 .9em system-ui,sans-serif;margin-bottom:10px}
+/* coloring */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;margin:8px 0}
+.sw{width:44px;height:44px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;flex:0 0 44px;padding:0}
 .sw.on{box-shadow:0 0 0 4px var(--ink)}
-.tb{font:600 17px system-ui,sans-serif;border:2px solid var(--teal);background:#fff;color:var(--teal-d);border-radius:12px;padding:10px 14px;cursor:pointer}
+.sw.sm{width:36px;height:36px;flex-basis:36px}
+.tb{font:600 1em system-ui,sans-serif;border:2px solid var(--teal);background:#fff;color:var(--teal-d);border-radius:12px;padding:9px 13px}
 .tb.on{background:var(--teal);color:#fff}
-.pics{display:flex;gap:10px;justify-content:center;margin-bottom:10px}
-.canvasbox{position:relative;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden;touch-action:none}
-.canvasbox canvas{position:absolute;left:0;top:0;width:100%;height:100%}
+.lbl{font:700 .85em system-ui,sans-serif;color:#666;margin-right:4px}
+.picker{position:relative;display:inline-flex;align-items:center;gap:6px;font:600 1em system-ui,sans-serif;border:2px solid var(--orange);color:#9a4a10;background:#fff;border-radius:12px;padding:6px 10px}
+.picker input{width:40px;height:34px;border:0;padding:0;background:none}
+.stage{position:relative;margin:0 auto;background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.08);overflow:hidden;touch-action:none}
+.inner{position:absolute;left:0;top:0;transform-origin:0 0}
+.inner canvas{position:absolute;left:0;top:0;width:100%;height:100%}
 #art{mix-blend-mode:multiply;pointer-events:none}
-footer{text-align:center;font:15px system-ui,sans-serif;color:#555;padding:20px}
+/* modal + toast */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.on{display:flex}
+.sheet{background:var(--cream);border-radius:20px;max-width:520px;width:100%;padding:22px;text-align:center;max-height:90vh;overflow:auto}
+.sheet h2{margin-top:0}
+.sheet input[type=text]{width:100%;font:1.1em system-ui,sans-serif;padding:12px;border-radius:12px;border:2px solid #ccc;margin:8px 0}
+.sheet .row{justify-content:center;margin-top:12px}
+.err{color:#b3261e;font:600 .95em system-ui,sans-serif;min-height:1.2em}
+#toast{position:fixed;left:50%;top:90px;transform:translateX(-50%) scale(.8);background:var(--mustard);color:var(--ink);font:800 1.3em system-ui,sans-serif;border-radius:999px;padding:10px 22px;opacity:0;transition:all .25s;z-index:60;pointer-events:none}
+#toast.on{opacity:1;transform:translateX(-50%) scale(1)}
+#a2hs{display:none;position:fixed;left:12px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));background:#fff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.2);padding:14px 16px;z-index:40;font:1em system-ui,sans-serif;align-items:center;gap:12px}
+#a2hs.on{display:flex}
+#a2hs p{margin:0;flex:1;line-height:1.4}
+footer{text-align:center;font:.9em system-ui,sans-serif;color:#555;padding:24px 16px 90px}
 footer a{color:var(--teal-d);font-weight:700}
+.confetti{font-size:2.6em;margin:0}
 </style>
 </head>
 <body>
 <header>
- <div><h1>Growing Up in the '60s</h1><small>Interactive sample · Amia Khan</small></div>
- <nav><button id="tabWS" class="on">Word Search</button><button id="tabCol">Coloring</button></nav>
+ <div class="brand"><img src="icon-192.png" alt="" width="40" height="40" style="border-radius:10px"><div><h1>'60s Puzzles</h1><small>by Amia Khan</small></div></div>
+ <div class="hright">
+  <button class="hbtn" id="homeBtn" style="display:none">⌂ Home</button>
+  <button class="hbtn" id="lpBtn">Aa Large print</button>
+  <span class="pts" id="pts">⭐ 0</span>
+ </div>
 </header>
 <main>
-<section id="pWS" class="page on">
+<!-- HOME -->
+<section class="view on" id="vHome">
+ <p class="lead" id="welcome">Welcome back to the '60s! Find the hidden words, earn points, and color in your own favourite shades. Your progress saves automatically on this device.</p>
+ <h2>Word Search</h2>
+ <div class="cards" id="pCards"></div>
+ <h2>Coloring</h2>
+ <div class="cards" id="cCards"></div>
+ <div class="ownerbox" id="ownerBox">
+  <h2 style="margin-top:0">📖 Own an Amia Khan book?</h2>
+  <p class="lead" style="margin-bottom:10px">Unlock a bonus puzzle, a bonus coloring page and <b>200 points</b>, just for book owners.</p>
+  <button class="big" id="ownerBtn">Unlock my bonus</button>
+ </div>
+</section>
+<!-- PUZZLE -->
+<section class="view" id="vPuz">
  <div class="ws">
-  <div class="gridwrap"><svg id="hl"></svg><div id="grid"></div></div>
-  <div class="words">
-   <h2>Rock 'n' Roll Radio</h2>
-   <p class="fact">On February 9, 1964, about 73 million Americans tuned in to watch the Beatles' first appearance on The Ed Sullivan Show.</p>
+  <div class="gridwrap" id="gw"><div id="grid"></div><div id="nudge"></div></div>
+  <div class="side">
+   <div class="booklabel" id="bookLabel" style="display:none">📖 This puzzle is from <i>Growing Up in the '60s</i>. The book has 44 more.</div>
+   <h2 id="pTitle"></h2>
+   <p class="fact" id="pFact"></p>
    <ul id="list"></ul>
-   <p class="hint">Drag across a word, or tap its first letter and then its last.</p>
-   <div class="done" id="done">You found them all! 🎉</div>
+   <p class="small">Drag across a word, or tap its first letter and then its last. Words go across, down or diagonally, never backwards.</p>
+   <div class="hints">
+    <h4>💡 Stuck? Use your points</h4>
+    <button class="hint" id="hNudge">Nudge: show the area <span id="nudgeCost">10 pts</span></button>
+    <button class="hint" id="hFirst">First letter of a word <span>20 pts</span></button>
+    <button class="hint" id="hReveal">Reveal a whole word <span>40 pts</span></button>
+    <p class="small" id="hintMsg" style="margin:6px 0 0"></p>
+   </div>
   </div>
  </div>
 </section>
-<section id="pCol" class="page">
- <div class="color">
-  <div class="pics"><button class="tb on" data-pic="jukebox.png">Jukebox</button><button class="tb" data-pic="milkshake.png">Milkshake</button></div>
-  <div class="toolbar" id="pal"></div>
-  <div class="toolbar">
-   <button class="tb on" id="tFill">🪣 Fill</button><button class="tb" id="tBrush">🖌️ Brush</button>
-   <button class="tb" id="tSize">Brush: Medium</button>
-   <button class="tb" id="tUndo">↶ Undo</button><button class="tb" id="tClear">Start over</button><button class="tb" id="tSave">Save picture</button>
-  </div>
-  <div class="canvasbox" id="cbox"><canvas id="paint"></canvas><canvas id="art"></canvas></div>
+<!-- COLORING -->
+<section class="view" id="vCol">
+ <div class="booklabel" id="cBookLabel" style="display:none;max-width:720px;margin:0 auto 10px">📖 This picture is from <i>Growing Up in the '60s</i>. The book has many more coloring pages.</div>
+ <div class="toolbar" id="pal"></div>
+ <div class="toolbar">
+  <span class="picker">🎨 Any colour <input type="color" id="picker" value="#e63946"></span>
+  <span class="lbl">Shades</span><span id="shades" class="row"></span>
  </div>
+ <div class="toolbar" id="recentRow"><span class="lbl">My colours</span><span id="recent" class="row"></span></div>
+ <div class="toolbar">
+  <button class="tb on" id="tFill">🪣 Fill</button><button class="tb" id="tBrush">🖌️ Brush</button><button class="tb" id="tMove">✋ Move</button>
+  <button class="tb" id="tSize">Brush: Medium</button>
+  <button class="tb" id="zIn">＋ Zoom</button><button class="tb" id="zOut">－</button>
+  <button class="tb" id="tUndo">↶ Undo</button><button class="tb" id="tClear">Start over</button>
+  <button class="tb" id="tDone" style="border-color:var(--orange);color:#9a4a10">✅ I'm done!</button>
+ </div>
+ <div class="stage" id="stage"><div class="inner" id="inner"><canvas id="paint"></canvas><canvas id="art"></canvas></div></div>
 </section>
 </main>
-<footer>Love it? The full book has many more puzzles and coloring pages. <a href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener">See it on Amazon</a></footer>
+<footer>Love these? There are 45 more '60s puzzles and coloring pages in the large-print book. <a href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener">See it on Amazon</a></footer>
+
+<div id="toast"></div>
+<div id="a2hs"><p>📲 <b>Keep your points safe:</b> tap the Share button <b>⎙</b>, then <b>Add to Home Screen</b>. The game opens like an app.</p><button class="tb" id="a2hsX">Got it</button></div>
+
+<div class="modal" id="mDone"><div class="sheet">
+ <p class="confetti">🎉🎶🎉</p>
+ <h2 id="dTitle">You found them all!</h2>
+ <p class="lead" id="dPts"></p>
+ <p class="lead">Loved it? There are <b>45 more '60s puzzles</b> in the large-print book.</p>
+ <div class="row"><a class="big" href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener" style="text-decoration:none">See the book on Amazon</a></div>
+ <div class="row"><button class="big teal" id="signupBtn">🎁 Free printable puzzle + 100 points</button></div>
+ <div class="row"><button class="big ghost" id="dHome">Back to puzzles</button></div>
+</div></div>
+
+<div class="modal" id="mOwner"><div class="sheet">
+ <h2>📖 Book owner bonus</h2>
+ <p class="lead">Open your book to <b>puzzle number 12</b>. What's its title?</p>
+ <p class="small">Works with <i>Growing Up in the '60s</i> or <i>A '60s Christmas</i>.</p>
+ <input type="text" id="ownerIn" placeholder="Type the title of puzzle 12" autocomplete="off">
+ <p class="err" id="ownerErr"></p>
+ <div class="row"><button class="big" id="ownerGo">Unlock</button><button class="big ghost" id="ownerX">Not now</button></div>
+ <p class="small" style="margin-top:14px">Don't have the book yet? <a href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener">See it on Amazon</a></p>
+</div></div>
+
+<div class="modal" id="mMsg"><div class="sheet"><h2 id="msgT"></h2><p class="lead" id="msgB"></p><div class="row"><button class="big teal" id="msgX">OK</button></div></div></div>
+
 <script>
-const DATA={"grid": ["HOPISROBNNNPMO", "HOVDBEACHBOYSR", "SJDUSAMVMRGEFV", "TWUDAURYUVDLYH", "ESRKBRPGMBOVMS", "MBEEEMERBLKIOI", "PVBHFBWTELHSTN", "TTBDHGOOHMDNOA", "ASJVFKWXTAEUWT", "TPBOBDYLANBSNR", "IBEATLESKINKSA", "OROLLINGSTONES", "NLOGABJYVINYLT", "SNOTHETWISTRWF"], "words": {"Rolling Stones": [11, 1, 11, 13], "Temptations": [3, 0, 13, 0], "Beach Boys": [1, 4, 1, 12], "Supremes": [2, 4, 9, 11], "Bob Dylan": [9, 2, 9, 9], "The Twist": [13, 3, 13, 10], "Beatles": [10, 1, 10, 7], "Jukebox": [2, 1, 8, 7], "Sinatra": [4, 13, 10, 13], "Motown": [4, 12, 9, 12], "Aretha": [3, 4, 8, 9], "Elvis": [2, 11, 6, 11], "Kinks": [10, 8, 10, 12], "Vinyl": [12, 8, 12, 12]}};
-const N=14;
-// ---------- tabs
-const tabs={tabWS:'pWS',tabCol:'pCol'};
-for(const t in tabs)document.getElementById(t).onclick=()=>{for(const u in tabs){document.getElementById(u).classList.toggle('on',u===t);document.getElementById(tabs[u]).classList.toggle('on',u===t)} if(t==='tabCol')sizeCanvas();};
+const PUZ=[{"id": "radio", "title": "Radio Request Line", "tag": "Free puzzle \u00b7 Week 1", "fact": "In the '60s, teens phoned their local radio station to request a song and dedicate it to a sweetheart, then waited by the transistor radio to hear it played.", "grid": ["UACUBHAWNBSIDE", "NNTCFCIMCGBUFC", "NTDACOATDLUPSS", "IEELPARYPICKCK", "GNDLAOOTJAATEM", "HNIIPEDLYIRLWH", "TACNOEGHDFNADB", "ODACSTATICIGDV", "WCTLDAOVRGLVLE", "LVICHAIRWGAOEE", "IUOTOPFORTYADR", "NBNIPDEEJAYKUH", "VBWIEARPHONEEJ", "BFLREQUESTMAJD"], "words": {"Dedication": [2, 2, 11, 2], "Hit Parade": [0, 5, 8, 13], "Forty Five": [1, 4, 9, 12], "Top Forty": [10, 3, 10, 10], "Earphone": [12, 4, 12, 11], "Night Owl": [2, 0, 9, 0], "Request": [13, 3, 13, 9], "Antenna": [0, 1, 6, 1], "Deejay": [11, 5, 11, 10], "AM Dial": [0, 6, 5, 11], "Call In": [1, 3, 6, 3], "Static": [7, 4, 7, 9], "Jingle": [4, 8, 9, 13], "B Side": [0, 9, 0, 13]}}, {"id": "book1", "title": "Rock 'n' Roll Radio", "tag": "From the book \u00b7 Sample", "fact": "On February 9, 1964, about 73 million Americans tuned in to watch the Beatles' first appearance on The Ed Sullivan Show.", "fromBook": true, "grid": ["HOPISROBNNNPMO", "HOVDBEACHBOYSR", "SJDUSAMVMRGEFV", "TWUDAURYUVDLYH", "ESRKBRPGMBOVMS", "MBEEEMERBLKIOI", "PVBHFBWTELHSTN", "TTBDHGOOHMDNOA", "ASJVFKWXTAEUWT", "TPBOBDYLANBSNR", "IBEATLESKINKSA", "OROLLINGSTONES", "NLOGABJYVINYLT", "SNOTHETWISTRWF"], "words": {"Rolling Stones": [11, 1, 11, 13], "Temptations": [3, 0, 13, 0], "Beach Boys": [1, 4, 1, 12], "Supremes": [2, 4, 9, 11], "Bob Dylan": [9, 2, 9, 9], "The Twist": [13, 3, 13, 10], "Beatles": [10, 1, 10, 7], "Jukebox": [2, 1, 8, 7], "Sinatra": [4, 13, 10, 13], "Motown": [4, 12, 9, 12], "Aretha": [3, 4, 8, 9], "Elvis": [2, 11, 6, 11], "Kinks": [10, 8, 10, 12], "Vinyl": [12, 8, 12, 12]}}, {"id": "sockhop", "title": "Friday Night Sock Hop", "tag": "Book owners bonus", "fact": "Sock hops got their name because dancers took off their shoes to protect the school gym floor and danced in their socks.", "locked": true, "grid": ["FHWALLFLOWERMG", "RTLDPHALLPASSL", "URRECORDHOPSGA", "IJBLTOHFDSVADS", "TBSORTMMCBHDIT", "PACLBCEMATVDGS", "UNSHOBLRMKBLYO", "NDWTAWYDMVBEMN", "CSUIEPDSDASSFG", "HTPEIAEAONNHLS", "RABVJODRNCTOOS", "TNCEOWOYOCKEOB", "TDOSATCOMNESRH", "PEPRALLYPTEFVG"], "words": {"Saddle Shoes": [2, 11, 12, 11], "Bobby Socks": [3, 2, 12, 11], "Wallflower": [0, 2, 0, 11], "Fruit Punch": [0, 0, 9, 0], "Chaperone": [5, 2, 13, 10], "Slow Dance": [4, 2, 12, 10], "Record Hop": [2, 2, 2, 10], "Letterman": [1, 2, 9, 10], "Bandstand": [4, 1, 12, 1], "Gym Floor": [5, 12, 12, 12], "Last Song": [1, 13, 8, 13], "Pep Rally": [13, 0, 13, 7], "Hall Pass": [1, 5, 1, 12], "Steady": [6, 2, 11, 7]}}];
+const PICS=[
+ {id:'radio',title:'Transistor Radio',src:'radio.png',tag:'Free coloring page'},
+ {id:'jukebox',title:'The Jukebox',src:'jukebox.png',tag:'From the book · Sample',fromBook:true},
+ {id:'recordplayer',title:'Record Player & Saddle Shoes',src:'recordplayer.png',tag:'Book owners bonus',locked:true}
+];
+const AMAZON='https://www.amazon.com/dp/B0HPK67VBX', SIGNUP='https://amia-khan-books.kit.com/01ee4aeda0';
+const N=14,KEY='amk60s_v1';
+// ---------- state
+let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
+S=Object.assign({points:0,welcomeGiven:false,streak:{last:'',count:0},found:{},revealed:{},done:{},started:{},lastProgress:{},unlocked:false,colorDone:{},recent:[],large:false,signup:false,a2hsSeen:false},S);
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const $=id=>document.getElementById(id);
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),1400)}
+function addPts(n,label){S.points+=n;save();renderPts();if(label)toast(label)}
+function renderPts(){$('pts').textContent='⭐ '+S.points}
+function msg(t,b){$('msgT').textContent=t;$('msgB').innerHTML=b;$('mMsg').classList.add('on')}
+$('msgX').onclick=()=>$('mMsg').classList.remove('on');
+function today(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function yesterday(){const d=new Date(Date.now()-864e5);return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+// welcome points + streak
+if(!S.welcomeGiven){S.welcomeGiven=true;S.points+=20;save();setTimeout(()=>msg('Welcome! 🎶','Here are <b>20 free points</b> to start. Spend them on a hint if you get stuck. Find words to earn more!'),400)}
+if(S.streak.last!==today()){const cont=S.streak.last===yesterday();S.streak.count=cont?S.streak.count+1:1;S.streak.last=today();if(cont){S.points+=15;setTimeout(()=>toast('🔥 Day '+S.streak.count+' streak! +15'),900)}save()}
+if(S.streak.count>1)$('welcome').innerHTML='🔥 <b>'+S.streak.count+'-day streak!</b> Come back tomorrow for another +15 points. Your progress saves automatically on this device.';
+// owner unlock via QR link
+const qp=new URLSearchParams(location.search);
+function unlockOwner(){if(S.unlocked)return false;S.unlocked=true;S.points+=200;save();renderPts();renderHome();return true}
+if(qp.get('owner')){if(unlockOwner())setTimeout(()=>msg('Thank you for buying the book! 📖','Your bonus puzzle, bonus coloring page and <b>200 points</b> are unlocked.'),500);history.replaceState(null,'',location.pathname)}
+// large print
+function applyLP(){document.body.classList.toggle('lp',S.large);$('lpBtn').textContent=S.large?'Aa Normal print':'Aa Large print'}
+$('lpBtn').onclick=()=>{S.large=!S.large;save();applyLP();setTimeout(()=>{if(cur)redrawFound();sizeStage()},50)};applyLP();
+// navigation
+function show(v){['vHome','vPuz','vCol'].forEach(x=>$(x).classList.toggle('on',x===v));$('homeBtn').style.display=v==='vHome'?'none':'';window.scrollTo(0,0)}
+$('homeBtn').onclick=()=>{saveColor();renderHome();show('vHome')};
+function renderHome(){
+ const pc=$('pCards');pc.innerHTML='';
+ PUZ.forEach(p=>{const lock=p.locked&&!S.unlocked;const b=document.createElement('button');b.className='card'+(lock?' locked':'');
+  const f=(S.found[p.id]||[]).length+(S.revealed[p.id]||[]).length,t=Object.keys(p.words).length;
+  b.innerHTML=`<span class="tag ${p.fromBook?'book':''} ${p.locked?'lock':''}">${lock?'🔒 ':''}${p.tag}</span>${S.done[p.id]?'<span class="badge">✓ Done</span>':''}<h3>${p.title}</h3><p>${lock?'Unlock with your book':(f?f+' of '+t+' words found':t+' words to find')}</p>`;
+  b.onclick=()=>lock?openOwner():openPuzzle(p);pc.appendChild(b)});
+ const cc=$('cCards');cc.innerHTML='';
+ PICS.forEach(p=>{const lock=p.locked&&!S.unlocked;const b=document.createElement('button');b.className='card'+(lock?' locked':'');
+  b.innerHTML=`<img src="${p.src}" alt="${p.title}" loading="lazy"><span class="tag ${p.fromBook?'book':''} ${p.locked?'lock':''}">${lock?'🔒 ':''}${p.tag}</span>${S.colorDone[p.id]?'<span class="badge">✓ Done</span>':''}<h3>${p.title}</h3>`;
+  b.onclick=()=>lock?openOwner():openPic(p);cc.appendChild(b)});
+ $('ownerBox').style.display=S.unlocked?'none':'';
+}
+// ---------- owner modal
+function openOwner(){$('ownerErr').textContent='';$('ownerIn').value='';$('mOwner').classList.add('on');setTimeout(()=>$('ownerIn').focus(),100)}
+$('ownerBtn').onclick=openOwner;$('ownerX').onclick=()=>$('mOwner').classList.remove('on');
+$('ownerGo').onclick=()=>{const v=$('ownerIn').value.toLowerCase();if(/beach|carol/.test(v)){$('mOwner').classList.remove('on');unlockOwner();msg('Unlocked! 🎉','Thank you for buying the book. Your bonus puzzle, bonus coloring page and <b>200 points</b> are ready.')}else $('ownerErr').textContent="That doesn't match. Check the title at the top of puzzle 12 and try again."};
+$('ownerIn').addEventListener('keydown',e=>{if(e.key==='Enter')$('ownerGo').click()});
 // ---------- word search
-const grid=document.getElementById('grid'),list=document.getElementById('list'),hl=document.getElementById('hl');
-const cells=[];
-DATA.grid.forEach((row,r)=>[...row].forEach((ch,c)=>{const d=document.createElement('div');d.textContent=ch;d.dataset.r=r;d.dataset.c=c;grid.appendChild(d);cells.push(d)}));
-const words=Object.keys(DATA.words);const found=new Set();
-words.forEach(w=>{const li=document.createElement('li');li.textContent=w;li.id='w_'+w.replace(/\W/g,'');list.appendChild(li)});
-const colors=['#e07a2e','#1f6f78','#e3b23c','#c44569','#5b8c5a','#7d5ba6','#3a86c8'];
+let cur=null,cells=[];
+const grid=$('grid'),list=$('list');
+const COLS=['#e07a2e','#1f6f78','#e3b23c','#c44569','#5b8c5a','#7d5ba6','#3a86c8'];
+function clean(w){return w.toUpperCase().replace(/[^A-Z]/g,'')}
+function wordCells(w){const[p,q,s,t]=cur.words[w];const dr=Math.sign(s-p),dc=Math.sign(t-q),n=Math.max(Math.abs(s-p),Math.abs(t-q));const o=[];for(let i=0;i<=n;i++)o.push(cells[(p+dr*i)*N+q+dc*i]);return o}
+function openPuzzle(p){cur=p;grid.innerHTML='';cells=[];
+ p.grid.forEach((row,r)=>[...row].forEach((ch,c)=>{const d=document.createElement('div');d.textContent=ch;d.dataset.r=r;d.dataset.c=c;grid.appendChild(d);cells.push(d)}));
+ $('pTitle').textContent=p.title;$('pFact').textContent=p.fact;$('bookLabel').style.display=p.fromBook?'':'none';
+ list.innerHTML='';Object.keys(p.words).sort().forEach(w=>{const li=document.createElement('li');li.textContent=w;li.dataset.w=w;list.appendChild(li)});
+ S.found[p.id]=S.found[p.id]||[];S.revealed[p.id]=S.revealed[p.id]||[];if(!S.started[p.id])S.started[p.id]=Date.now();S.lastProgress[p.id]=S.lastProgress[p.id]||Date.now();save();
+ show('vPuz');redrawFound();updateHints()}
+function paintWord(w,col){wordCells(w).forEach(c=>{c.style.background=col})}
+function redrawFound(){cells.forEach(c=>c.style.background='');S.found[cur.id].forEach((w,i)=>paintWord(w,COLS[i%COLS.length]+'66'));S.revealed[cur.id].forEach(w=>paintWord(w,'#00000018'));
+ [...list.children].forEach(li=>{li.className=S.found[cur.id].includes(li.dataset.w)?'found':S.revealed[cur.id].includes(li.dataset.w)?'revealed':''})}
+function remaining(){return Object.keys(cur.words).filter(w=>!S.found[cur.id].includes(w)&&!S.revealed[cur.id].includes(w))}
 function cellAt(x,y){const el=document.elementFromPoint(x,y);return el&&el.parentNode===grid?el:null}
-function line(a,b){const r1=+a.dataset.r,c1=+a.dataset.c,r2=+b.dataset.r,c2=+b.dataset.c;const dr=Math.sign(r2-r1),dc=Math.sign(c2-c1);const len=Math.max(Math.abs(r2-r1),Math.abs(c2-c1));if(!(r1===r2||c1===c2||Math.abs(r2-r1)===Math.abs(c2-c1)))return null;const out=[];for(let i=0;i<=len;i++)out.push(cells[(r1+dr*i)*N+c1+dc*i]);return out}
+function lineOK(a,b){const dr=b.dataset.r-a.dataset.r,dc=b.dataset.c-a.dataset.c;return dr===0||dc===0||Math.abs(dr)===Math.abs(dc)}
+function lineCells(a,b){const r1=+a.dataset.r,c1=+a.dataset.c,r2=+b.dataset.r,c2=+b.dataset.c,dr=Math.sign(r2-r1),dc=Math.sign(c2-c1),n=Math.max(Math.abs(r2-r1),Math.abs(c2-c1));const o=[];for(let i=0;i<=n;i++)o.push(cells[(r1+dr*i)*N+c1+dc*i]);return o}
 function clearSel(){cells.forEach(c=>c.classList.remove('sel'))}
+function tryWord(a,b){const r1=+a.dataset.r,c1=+a.dataset.c,r2=+b.dataset.r,c2=+b.dataset.c;
+ for(const w of remaining()){const[p,q,s,t]=cur.words[w];if((p===r1&&q===c1&&s===r2&&t===c2)||(p===r2&&q===c2&&s===r1&&t===c1)){found(w);return}}}
+function found(w){S.found[cur.id].push(w);S.lastProgress[cur.id]=Date.now();save();redrawFound();addPts(10,'+10 ⭐');checkDone();updateHints()}
+function checkDone(){if(remaining().length||S.done[cur.id])return;S.done[cur.id]=true;let bonus=50,txt='+50 bonus for finishing';
+ const mins=(Date.now()-S.started[cur.id])/6e4;if(mins<10){bonus+=5;txt+=', +5 speed bonus'}
+ const earned=S.found[cur.id].length*10+bonus;addPts(bonus);
+ $('dTitle').textContent=S.revealed[cur.id].length?'Puzzle complete!':'You found them all!';
+ $('dPts').innerHTML=`You earned <b>${earned} points</b> (${txt}). You now have <b>${S.points}</b>.`;
+ setTimeout(()=>$('mDone').classList.add('on'),700)}
 let startCell=null,dragging=false,moved=false,tapStart=null;
-function check(a,b){const r1=+a.dataset.r,c1=+a.dataset.c,r2=+b.dataset.r,c2=+b.dataset.c;for(const w of words){if(found.has(w))continue;const[p,q,s,t]=DATA.words[w];if((p===r1&&q===c1&&s===r2&&t===c2)||(p===r2&&q===c2&&s===r1&&t===c1)){mark(w);return true}}return false}
-function mark(w){found.add(w);const[p,q,s,t]=DATA.words[w];const box=grid.getBoundingClientRect(),cw=box.width/N;const col=colors[found.size%colors.length];const ln=document.createElementNS('http://www.w3.org/2000/svg','line');ln.setAttribute('x1',q*cw+cw/2);ln.setAttribute('y1',p*cw+cw/2);ln.setAttribute('x2',t*cw+cw/2);ln.setAttribute('y2',s*cw+cw/2);ln.setAttribute('stroke',col);ln.setAttribute('stroke-opacity','.45');ln.setAttribute('stroke-width',cw*.8);ln.setAttribute('stroke-linecap','round');ln.dataset.w=w;hl.appendChild(ln);for(let i=0;i<=Math.max(Math.abs(s-p),Math.abs(t-q));i++){const cc=cells[(p+Math.sign(s-p)*i)*N+q+Math.sign(t-q)*i];cc.style.background=col+'66';cc.classList.add('got')}document.getElementById('w_'+w.replace(/\W/g,'')).classList.add('found');if(found.size===words.length)document.getElementById('done').style.display='block'}
-function redraw(){hl.innerHTML='';cells.forEach(c=>{c.style.background='';c.classList.remove('got')});const f=[...found];found.clear();f.forEach(mark)}
-window.addEventListener('resize',redraw);
 grid.addEventListener('pointerdown',e=>{const c=cellAt(e.clientX,e.clientY);if(!c)return;e.preventDefault();dragging=true;moved=false;startCell=c;clearSel();c.classList.add('sel')});
-window.addEventListener('pointermove',e=>{if(!dragging)return;const c=cellAt(e.clientX,e.clientY);if(!c)return;if(c!==startCell)moved=true;const l=line(startCell,c);clearSel();(l||[startCell]).forEach(x=>x.classList.add('sel'))});
+window.addEventListener('pointermove',e=>{if(!dragging)return;const c=cellAt(e.clientX,e.clientY);if(!c)return;if(c!==startCell)moved=true;clearSel();(lineOK(startCell,c)?lineCells(startCell,c):[startCell]).forEach(x=>x.classList.add('sel'))});
 window.addEventListener('pointerup',e=>{if(!dragging)return;dragging=false;const c=cellAt(e.clientX,e.clientY)||startCell;clearSel();
- if(moved){if(line(startCell,c))check(startCell,c);if(tapStart){tapStart.classList.remove('start');tapStart=null}return}
- if(tapStart){const a=tapStart;tapStart.classList.remove('start');tapStart=null;if(a!==c&&line(a,c))check(a,c);return}
+ if(moved){if(lineOK(startCell,c))tryWord(startCell,c);if(tapStart){tapStart.classList.remove('start');tapStart=null}return}
+ if(tapStart){const a=tapStart;tapStart.classList.remove('start');tapStart=null;if(a!==c&&lineOK(a,c))tryWord(a,c);return}
  tapStart=c;c.classList.add('start')});
+window.addEventListener('resize',()=>{if(cur)redrawFound()});
+// hints
+const FREE_AFTER=5*60*1000;
+function freeNudge(){return cur&&Date.now()-S.lastProgress[cur.id]>FREE_AFTER}
+function updateHints(){if(!cur)return;const left=remaining().length;const fn=freeNudge();
+ $('hNudge').classList.toggle('free',fn);$('nudgeCost').textContent=fn?'Free!':'10 pts';
+ $('hNudge').disabled=!left||(!fn&&S.points<10);$('hFirst').disabled=!left||S.points<20;$('hReveal').disabled=!left||S.points<40;
+ $('hintMsg').textContent=!left?'':(S.points<10&&!fn?'Find one more word to earn a hint!':'')}
+setInterval(updateHints,15000);
+function pick(){const r=remaining();return r[Math.floor(Math.random()*r.length)]}
+function spend(n){if(S.points<n){$('hintMsg').textContent='Find one more word to earn a hint!';return false}addPts(-n);return true}
+$('hNudge').onclick=()=>{const w=pick();if(!w)return;if(freeNudge()){S.lastProgress[cur.id]=Date.now();save()}else if(!spend(10))return;
+ const[p,q]=cur.words[w];const r0=Math.max(0,Math.min(N-4,p-1)),c0=Math.max(0,Math.min(N-4,q-1));
+ const gb=grid.getBoundingClientRect(),wb=$('gw').getBoundingClientRect(),cw=gb.width/N,nd=$('nudge');
+ nd.style.left=(gb.left-wb.left+c0*cw)+'px';nd.style.top=(gb.top-wb.top+r0*cw)+'px';nd.style.width=nd.style.height=(4*cw)+'px';
+ nd.style.display='none';void nd.offsetWidth;nd.style.display='block';clearTimeout(nd.t);nd.t=setTimeout(()=>nd.style.display='none',4200);
+ $('hintMsg').textContent='A word starts inside the orange box.';updateHints()};
+$('hFirst').onclick=()=>{const w=pick();if(!w||!spend(20))return;const c=wordCells(w)[0];c.classList.remove('flash');void c.offsetWidth;c.classList.add('flash');setTimeout(()=>c.classList.remove('flash'),4200);$('hintMsg').textContent='The flashing letter starts a hidden word.';updateHints()};
+$('hReveal').onclick=()=>{const w=pick();if(!w||!spend(40))return;S.revealed[cur.id].push(w);S.lastProgress[cur.id]=Date.now();save();redrawFound();$('hintMsg').textContent='Revealed: '+w+'.';checkDone();updateHints()};
+// done modal
+$('dHome').onclick=()=>{$('mDone').classList.remove('on');renderHome();show('vHome')};
+$('signupBtn').onclick=()=>{window.open(SIGNUP,'_blank','noopener');if(!S.signup){S.signup=true;addPts(100,'+100 ⭐ Thank you!')}};
 // ---------- coloring
-const PAL=['#e63946','#f28c28','#f6c945','#8cc152','#2a9d8f','#3a86c8','#7d5ba6','#e88aa8','#8b5a2b','#c0c0c0','#2a2a2a','#ffffff'];
-let cur=PAL[0],tool='fill',brush=18;
-const pal=document.getElementById('pal');
-PAL.forEach((c,i)=>{const b=document.createElement('button');b.className='sw'+(i?'':' on');b.style.background=c;b.setAttribute('aria-label','color '+c);b.onclick=()=>{cur=c;pal.querySelectorAll('.sw').forEach(x=>x.classList.remove('on'));b.classList.add('on')};pal.appendChild(b)});
-const paint=document.getElementById('paint'),art=document.getElementById('art'),cbox=document.getElementById('cbox');
-const pctx=paint.getContext('2d',{willReadFrequently:true}),actx=art.getContext('2d',{willReadFrequently:true});
-let mask=null,W=0,H=0,undo=[],picName='jukebox.png';
-function loadPic(src){const im=new Image();im.onload=()=>{W=im.width;H=im.height;[paint,art].forEach(c=>{c.width=W;c.height=H});actx.drawImage(im,0,0);const d=actx.getImageData(0,0,W,H).data;mask=new Uint8Array(W*H);for(let i=0;i<W*H;i++)mask[i]=d[i*4]<140?1:0;pctx.fillStyle='#fff';pctx.fillRect(0,0,W,H);undo=[];sizeCanvas()};im.src=src}
-function sizeCanvas(){if(!W)return;const maxW=Math.min(window.innerWidth-32,900),maxH=window.innerHeight-250;let s=Math.min(maxW/W,Math.max(maxH,320)/H);cbox.style.width=W*s+'px';cbox.style.height=H*s+'px'}
-window.addEventListener('resize',sizeCanvas);
-document.querySelectorAll('[data-pic]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-pic]').forEach(x=>x.classList.remove('on'));b.classList.add('on');picName=b.dataset.pic;loadPic(picName)});
-function pushUndo(){undo.push(pctx.getImageData(0,0,W,H));if(undo.length>25)undo.shift()}
+const PAL=['#c0392b','#e63946','#e88aa8','#f4a3a8','#e07a2e','#f28c28','#e3b23c','#f6d55c','#8a9a3b','#6b8e23','#8cc152','#2a9d8f','#40b5ad','#1f6f78','#3a86c8','#a7c7e7','#7d5ba6','#b39ddb','#8b5a2b','#c49a6c','#f3e0c0','#9e9e9e','#2a2a2a','#ffffff'];
+let color=PAL[1],tool='fill',brush=18,pic=null;
+const pal=$('pal');
+function setColor(c,fromPicker){color=c;if(!fromPicker)$('picker').value=c;document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x.dataset.c===c));renderShades()}
+function swatch(c,sm){const b=document.createElement('button');b.className='sw'+(sm?' sm':'');b.style.background=c;b.dataset.c=c;b.setAttribute('aria-label','colour '+c);b.onclick=()=>setColor(c);return b}
+PAL.forEach(c=>pal.appendChild(swatch(c)));
 function hex(c){return[parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)]}
+function toHex(a){return'#'+a.map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('')}
+function mix(c,t,k){const a=hex(c),b=hex(t);return toHex(a.map((v,i)=>v+(b[i]-v)*k))}
+function renderShades(){const s=$('shades');s.innerHTML='';[mix(color,'#ffffff',.55),mix(color,'#ffffff',.28),color,mix(color,'#000000',.22),mix(color,'#000000',.42)].forEach(c=>s.appendChild(swatch(c,true)));document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x.dataset.c===color))}
+function renderRecent(){const r=$('recent');r.innerHTML='';S.recent.forEach(c=>r.appendChild(swatch(c,true)));$('recentRow').style.display=S.recent.length?'':'none'}
+function useColor(){if(S.recent[0]===color)return;S.recent=[color,...S.recent.filter(c=>c!==color)].slice(0,8);save();renderRecent()}
+$('picker').addEventListener('input',e=>setColor(e.target.value,true));
+const paint=$('paint'),art=$('art'),stage=$('stage'),inner=$('inner');
+const pctx=paint.getContext('2d',{willReadFrequently:true}),actx=art.getContext('2d',{willReadFrequently:true});
+let mask=null,W=0,H=0,undo=[],z={s:1,x:0,y:0},base=1;
+function storeKey(){return KEY+'_pic_'+pic.id}
+function openPic(p){pic=p;$('cBookLabel').style.display=p.fromBook?'':'none';show('vCol');const im=new Image();im.onload=()=>{W=im.width;H=im.height;[paint,art].forEach(c=>{c.width=W;c.height=H});actx.drawImage(im,0,0);const d=actx.getImageData(0,0,W,H).data;mask=new Uint8Array(W*H);for(let i=0;i<W*H;i++)mask[i]=d[i*4]<140?1:0;
+ pctx.fillStyle='#fff';pctx.fillRect(0,0,W,H);undo=[];z={s:1,x:0,y:0};
+ let saved=null;try{saved=localStorage.getItem(storeKey())}catch(e){}
+ if(saved){const s=new Image();s.onload=()=>pctx.drawImage(s,0,0);s.src=saved}
+ sizeStage()};im.src=p.src;renderRecent();renderShades()}
+function sizeStage(){if(!W)return;const maxW=Math.min(window.innerWidth-32,900),maxH=Math.max(window.innerHeight-300,340);base=Math.min(maxW/W,maxH/H);stage.style.width=W*base+'px';stage.style.height=H*base+'px';inner.style.width=W*base+'px';inner.style.height=H*base+'px';applyZ()}
+function applyZ(){const sw=W*base,sh=H*base;z.s=Math.max(1,Math.min(5,z.s));z.x=Math.min(0,Math.max(sw-sw*z.s,z.x));z.y=Math.min(0,Math.max(sh-sh*z.s,z.y));inner.style.transform=`translate(${z.x}px,${z.y}px) scale(${z.s})`}
+window.addEventListener('resize',sizeStage);
+function zoomAt(f,cx,cy){const ns=Math.max(1,Math.min(5,z.s*f));z.x=cx-(cx-z.x)*ns/z.s;z.y=cy-(cy-z.y)*ns/z.s;z.s=ns;applyZ()}
+$('zIn').onclick=()=>zoomAt(1.5,W*base/2,H*base/2);$('zOut').onclick=()=>zoomAt(1/1.5,W*base/2,H*base/2);
+let saveT=null;function saveColor(){if(!pic||!W)return;try{localStorage.setItem(storeKey(),paint.toDataURL('image/png'))}catch(e){}}
+function queueSave(){clearTimeout(saveT);saveT=setTimeout(saveColor,800)}
+function pushUndo(){undo.push(pctx.getImageData(0,0,W,H));if(undo.length>20)undo.shift()}
 function pos(e){const r=paint.getBoundingClientRect();return[Math.floor((e.clientX-r.left)*W/r.width),Math.floor((e.clientY-r.top)*H/r.height)]}
 function fill(x,y){if(x<0||y<0||x>=W||y>=H)return;let i0=y*W+x;
  if(mask[i0]){let best=-1;for(let r=1;r<6&&best<0;r++)for(let dy=-r;dy<=r&&best<0;dy++)for(let dx=-r;dx<=r;dx++){const xx=x+dx,yy=y+dy;if(xx>=0&&yy>=0&&xx<W&&yy<H&&!mask[yy*W+xx]){best=yy*W+xx;break}}if(best<0)return;i0=best}
- const img=pctx.getImageData(0,0,W,H),d=img.data;const[R,G,B]=hex(cur);const tr=d[i0*4],tg=d[i0*4+1],tb=d[i0*4+2];if(tr===R&&tg===G&&tb===B)return;pushUndo();
+ const img=pctx.getImageData(0,0,W,H),d=img.data;const[R,G,B]=hex(color);const tr=d[i0*4],tg=d[i0*4+1],tb=d[i0*4+2];if(tr===R&&tg===G&&tb===B)return;pushUndo();
  const st=[i0],seen=new Uint8Array(W*H);seen[i0]=1;
  while(st.length){const i=st.pop();d[i*4]=R;d[i*4+1]=G;d[i*4+2]=B;d[i*4+3]=255;const x1=i%W,y1=(i-x1)/W;
   const nb=[x1>0?i-1:-1,x1<W-1?i+1:-1,y1>0?i-W:-1,y1<H-1?i+W:-1];
-  for(const j of nb){if(j<0||seen[j]||mask[j])continue;if(Math.abs(d[j*4]-tr)+Math.abs(d[j*4+1]-tg)+Math.abs(d[j*4+2]-tb)>40)continue;seen[j]=1;st.push(j)}}
- // grow 1px into line edges so no white halo
- pctx.putImageData(img,0,0)}
-let drawing=false,last=null;
-paint.addEventListener('pointerdown',e=>{e.preventDefault();const[x,y]=pos(e);if(tool==='fill'){fill(x,y);return}pushUndo();drawing=true;last=[x,y];stroke(x,y)});
-paint.addEventListener('pointermove',e=>{if(!drawing)return;const[x,y]=pos(e);stroke(x,y)});
-window.addEventListener('pointerup',()=>{drawing=false});
-function stroke(x,y){pctx.strokeStyle=cur;pctx.lineWidth=brush*W/900;pctx.lineCap='round';pctx.lineJoin='round';pctx.beginPath();pctx.moveTo(last[0],last[1]);pctx.lineTo(x,y);pctx.stroke();last=[x,y]}
-const tF=document.getElementById('tFill'),tB=document.getElementById('tBrush');
-tF.onclick=()=>{tool='fill';tF.classList.add('on');tB.classList.remove('on')};
-tB.onclick=()=>{tool='brush';tB.classList.add('on');tF.classList.remove('on')};
+  for(const j of nb){if(j<0||seen[j])continue;seen[j]=1;if(mask[j]){d[j*4]=R;d[j*4+1]=G;d[j*4+2]=B;continue}if(Math.abs(d[j*4]-tr)+Math.abs(d[j*4+1]-tg)+Math.abs(d[j*4+2]-tb)>40)continue;st.push(j)}}
+ pctx.putImageData(img,0,0);useColor();queueSave()}
+// pointer handling: one finger = tool, two fingers = pinch/pan
+const ptrs=new Map();let drawing=false,last=null,pinch=null,panStart=null;
+stage.addEventListener('pointerdown',e=>{e.preventDefault();stage.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(ptrs.size===2){if(drawing&&undo.length){pctx.putImageData(undo.pop(),0,0)}drawing=false;const[a,b]=[...ptrs.values()];const r=stage.getBoundingClientRect();pinch={d:Math.hypot(a.x-b.x,a.y-b.y),cx:(a.x+b.x)/2-r.left,cy:(a.y+b.y)/2-r.top,s:z.s,x:z.x,y:z.y};return}
+ if(ptrs.size>2)return;
+ if(tool==='move'){panStart={x:e.clientX,y:e.clientY,zx:z.x,zy:z.y};return}
+ const[x,y]=pos(e);if(tool==='fill'){fill(x,y);return}pushUndo();drawing=true;last=[x,y];stroke(x,y)});
+stage.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ if(pinch&&ptrs.size===2){const[a,b]=[...ptrs.values()];const r=stage.getBoundingClientRect();const d=Math.hypot(a.x-b.x,a.y-b.y),cx=(a.x+b.x)/2-r.left,cy=(a.y+b.y)/2-r.top;const ns=Math.max(1,Math.min(5,pinch.s*d/pinch.d));z.s=ns;z.x=cx-(pinch.cx-pinch.x)*ns/pinch.s;z.y=cy-(pinch.cy-pinch.y)*ns/pinch.s;applyZ();return}
+ if(panStart){z.x=panStart.zx+e.clientX-panStart.x;z.y=panStart.zy+e.clientY-panStart.y;applyZ();return}
+ if(drawing){const[x,y]=pos(e);stroke(x,y)}});
+function endPtr(e){ptrs.delete(e.pointerId);if(ptrs.size<2)pinch=null;if(!ptrs.size){if(drawing){useColor();queueSave()}drawing=false;panStart=null}}
+stage.addEventListener('pointerup',endPtr);stage.addEventListener('pointercancel',endPtr);
+function stroke(x,y){pctx.strokeStyle=color;pctx.lineWidth=brush*W/900/Math.sqrt(z.s);pctx.lineCap='round';pctx.lineJoin='round';pctx.beginPath();pctx.moveTo(last[0],last[1]);pctx.lineTo(x,y);pctx.stroke();last=[x,y]}
+function setTool(t){tool=t;['tFill','tBrush','tMove'].forEach(id=>$(id).classList.toggle('on',id==='t'+t[0].toUpperCase()+t.slice(1)))}
+$('tFill').onclick=()=>setTool('fill');$('tBrush').onclick=()=>setTool('brush');$('tMove').onclick=()=>setTool('move');
 const sizes=[[10,'Small'],[18,'Medium'],[34,'Large']];let si=1;
-document.getElementById('tSize').onclick=e=>{si=(si+1)%3;brush=sizes[si][0];e.target.textContent='Brush: '+sizes[si][1]};
-document.getElementById('tUndo').onclick=()=>{if(undo.length)pctx.putImageData(undo.pop(),0,0)};
-document.getElementById('tClear').onclick=()=>{if(confirm('Start this picture over?')){pushUndo();pctx.fillStyle='#fff';pctx.fillRect(0,0,W,H)}};
-document.getElementById('tSave').onclick=()=>{const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(paint,0,0);x.globalCompositeOperation='multiply';x.drawImage(art,0,0);c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='my-60s-coloring.png';a.click()})};
-loadPic(picName);
+$('tSize').onclick=e=>{si=(si+1)%3;brush=sizes[si][0];e.target.textContent='Brush: '+sizes[si][1];setTool('brush')};
+$('tUndo').onclick=()=>{if(undo.length){pctx.putImageData(undo.pop(),0,0);queueSave()}};
+$('tClear').onclick=()=>{if(confirm('Start this picture over?')){pushUndo();pctx.fillStyle='#fff';pctx.fillRect(0,0,W,H);queueSave()}};
+$('tDone').onclick=()=>{saveColor();const first=!S.colorDone[pic.id];if(first){S.colorDone[pic.id]=true;save();addPts(20)}
+ msg(first?'Beautiful! 🎨 +20 points':'Beautiful! 🎨','Your picture is saved here. <br><br><button class="big teal" id="dlBtn">Save picture to my device</button><br><br>Want more pages to color? The book has a coloring scene for every puzzle. <a href="'+AMAZON+'" target="_blank" rel="noopener">See it on Amazon</a>');
+ $('dlBtn').onclick=downloadPic};
+function downloadPic(){const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(paint,0,0);x.globalCompositeOperation='multiply';x.drawImage(art,0,0);
+ c.toBlob(async b=>{const f=new File([b],'my-60s-coloring.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'My \'60s coloring page'});return}catch(e){}}const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='my-60s-coloring.png';a.click()})}
+window.addEventListener('pagehide',saveColor);document.addEventListener('visibilitychange',()=>{if(document.hidden)saveColor()});
+// ---------- add to home screen tip (iPhone/iPad Safari, not already installed)
+const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+const standalone=window.navigator.standalone||matchMedia('(display-mode: standalone)').matches;
+if(isIOS&&!standalone&&!S.a2hsSeen)setTimeout(()=>$('a2hs').classList.add('on'),4000);
+$('a2hsX').onclick=()=>{S.a2hsSeen=true;save();$('a2hs').classList.remove('on')};
+renderPts();renderHome();setColor(PAL[1]);renderRecent();
 </script>
 </body>
 </html>
