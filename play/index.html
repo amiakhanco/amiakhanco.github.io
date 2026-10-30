@@ -24,7 +24,7 @@ main{max-width:1100px;margin:0 auto;padding:16px}
 #grid div{display:flex;align-items:center;justify-content:center;font:700 clamp(17px,3.6vw,30px) system-ui,sans-serif;border-radius:50%;position:relative;z-index:1}
 #grid div.sel{background:rgba(224,122,46,.35)}
 #grid div.start{background:var(--orange);color:#fff}
-#hl{position:absolute;inset:12px;pointer-events:none;z-index:0}
+#hl{position:absolute;left:12px;top:12px;width:calc(100% - 24px);height:calc(100% - 24px);pointer-events:none;z-index:2;overflow:visible}
 .words{min-width:240px;max-width:320px}
 .words h2,.color h2{font-size:24px;margin:4px 0 6px;color:var(--teal-d)}
 .fact{font-size:17px;line-height:1.45;background:#fff;border-left:5px solid var(--mustard);padding:10px 12px;border-radius:8px;margin:0 0 12px}
@@ -34,7 +34,7 @@ main{max-width:1100px;margin:0 auto;padding:16px}
 .hint{font:16px system-ui,sans-serif;color:#555;margin-top:10px}
 .done{display:none;margin-top:14px;background:var(--teal);color:#fff;padding:14px;border-radius:12px;font:600 18px system-ui,sans-serif}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin:8px 0 12px}
-.sw{width:46px;height:46px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;cursor:pointer}
+.sw{width:46px;flex:0 0 46px;height:46px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 2px #ccc;cursor:pointer}
 .sw.on{box-shadow:0 0 0 4px var(--ink)}
 .tb{font:600 17px system-ui,sans-serif;border:2px solid var(--teal);background:#fff;color:var(--teal-d);border-radius:12px;padding:10px 14px;cursor:pointer}
 .tb.on{background:var(--teal);color:#fff}
