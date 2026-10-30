@@ -22,6 +22,7 @@ main{max-width:1100px;margin:0 auto;padding:16px}
 .gridwrap{position:relative;background:#fff;border-radius:16px;padding:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);touch-action:none;user-select:none;-webkit-user-select:none}
 #grid{display:grid;grid-template-columns:repeat(14,1fr);width:min(92vw,620px);aspect-ratio:1}
 #grid div{display:flex;align-items:center;justify-content:center;font:700 clamp(17px,3.6vw,30px) system-ui,sans-serif;border-radius:50%;position:relative;z-index:1}
+#grid div.got{border-radius:8px}
 #grid div.sel{background:rgba(224,122,46,.35)}
 #grid div.start{background:var(--orange);color:#fff}
 #hl{position:absolute;left:12px;top:12px;width:calc(100% - 24px);height:calc(100% - 24px);pointer-events:none;z-index:2;overflow:visible}
@@ -96,8 +97,8 @@ function line(a,b){const r1=+a.dataset.r,c1=+a.dataset.c,r2=+b.dataset.r,c2=+b.d
 function clearSel(){cells.forEach(c=>c.classList.remove('sel'))}
 let startCell=null,dragging=false,moved=false,tapStart=null;
 function check(a,b){const r1=+a.dataset.r,c1=+a.dataset.c,r2=+b.dataset.r,c2=+b.dataset.c;for(const w of words){if(found.has(w))continue;const[p,q,s,t]=DATA.words[w];if((p===r1&&q===c1&&s===r2&&t===c2)||(p===r2&&q===c2&&s===r1&&t===c1)){mark(w);return true}}return false}
-function mark(w){found.add(w);const[p,q,s,t]=DATA.words[w];const box=grid.getBoundingClientRect(),cw=box.width/N;const col=colors[found.size%colors.length];const ln=document.createElementNS('http://www.w3.org/2000/svg','line');ln.setAttribute('x1',q*cw+cw/2);ln.setAttribute('y1',p*cw+cw/2);ln.setAttribute('x2',t*cw+cw/2);ln.setAttribute('y2',s*cw+cw/2);ln.setAttribute('stroke',col);ln.setAttribute('stroke-opacity','.45');ln.setAttribute('stroke-width',cw*.8);ln.setAttribute('stroke-linecap','round');ln.dataset.w=w;hl.appendChild(ln);document.getElementById('w_'+w.replace(/\W/g,'')).classList.add('found');if(found.size===words.length)document.getElementById('done').style.display='block'}
-function redraw(){hl.innerHTML='';const f=[...found];found.clear();f.forEach(mark)}
+function mark(w){found.add(w);const[p,q,s,t]=DATA.words[w];const box=grid.getBoundingClientRect(),cw=box.width/N;const col=colors[found.size%colors.length];const ln=document.createElementNS('http://www.w3.org/2000/svg','line');ln.setAttribute('x1',q*cw+cw/2);ln.setAttribute('y1',p*cw+cw/2);ln.setAttribute('x2',t*cw+cw/2);ln.setAttribute('y2',s*cw+cw/2);ln.setAttribute('stroke',col);ln.setAttribute('stroke-opacity','.45');ln.setAttribute('stroke-width',cw*.8);ln.setAttribute('stroke-linecap','round');ln.dataset.w=w;hl.appendChild(ln);for(let i=0;i<=Math.max(Math.abs(s-p),Math.abs(t-q));i++){const cc=cells[(p+Math.sign(s-p)*i)*N+q+Math.sign(t-q)*i];cc.style.background=col+'66';cc.classList.add('got')}document.getElementById('w_'+w.replace(/\W/g,'')).classList.add('found');if(found.size===words.length)document.getElementById('done').style.display='block'}
+function redraw(){hl.innerHTML='';cells.forEach(c=>{c.style.background='';c.classList.remove('got')});const f=[...found];found.clear();f.forEach(mark)}
 window.addEventListener('resize',redraw);
 grid.addEventListener('pointerdown',e=>{const c=cellAt(e.clientX,e.clientY);if(!c)return;e.preventDefault();dragging=true;moved=false;startCell=c;clearSel();c.classList.add('sel')});
 window.addEventListener('pointermove',e=>{if(!dragging)return;const c=cellAt(e.clientX,e.clientY);if(!c)return;if(c!==startCell)moved=true;const l=line(startCell,c);clearSel();(l||[startCell]).forEach(x=>x.classList.add('sel'))});
