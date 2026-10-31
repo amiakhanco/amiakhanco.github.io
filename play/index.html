@@ -223,7 +223,8 @@ if(S.streak.count>1)$('welcome').innerHTML='🔥 <b>'+S.streak.count+'-day strea
 // owner unlock via QR link
 const qp=new URLSearchParams(location.search);
 function unlockOwner(){if(S.unlocked)return false;S.unlocked=true;S.points+=200;save();renderPts();renderHome();return true}
-if(qp.get('owner')){if(unlockOwner())setTimeout(()=>msg('Thank you for buying the book! 📖','Your bonus puzzle, bonus coloring page and <b>200 points</b> are unlocked.'),500);history.replaceState(null,'',location.pathname)}
+const OWNER_CODES={xmas60:"A '60s Christmas",hc60:"Growing Up in the '60s (hardcover)"};
+if(qp.get('owner')&&OWNER_CODES[qp.get('owner').toLowerCase()]){if(unlockOwner())setTimeout(()=>msg('Thank you for buying the book! 📖','Your bonus puzzle, bonus coloring page and <b>200 points</b> are unlocked.'),500);history.replaceState(null,'',location.pathname)}
 // large print
 function applyLP(){document.body.classList.toggle('lp',S.large);$('lpBtn').textContent=S.large?'Aa Normal print':'Aa Large print'}
 $('lpBtn').onclick=()=>{S.large=!S.large;save();applyLP();setTimeout(()=>{if(cur)redrawFound();sizeStage()},50)};applyLP();
