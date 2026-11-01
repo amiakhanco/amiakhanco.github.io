@@ -833,6 +833,13 @@ tr.is-highlight > :last-child { box-shadow: 12px 0 var(--fill-tertiary); }
       .cards__media { aspect-ratio: auto; max-height: none; height: 360px; padding: 14px; }
       .cards__media img { width: auto; height: 100%; max-width: 100%; object-fit: contain; }
       @media (max-width: 560px) { .cards__media { height: 330px; } }
+      .x-holiday { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: center; margin-top: 28px; padding: 18px; border-radius: 16px; background: #fbede9; }
+      .x-holiday img { width: 96px; height: auto; border-radius: 4px; box-shadow: 0 1px 4px rgb(0 0 0 / 0.18); }
+      .x-holiday .x-holiday__eyebrow { margin: 0 0 2px; color: #a3182a; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.8rem; }
+      .x-holiday h3 { margin: 0 0 6px; color: #a3182a; }
+      .x-holiday p { margin: 0; }
+      .x-holiday .x-holiday__soon { margin-top: 6px; color: var(--x-teal); font-weight: 600; }
+      @media (max-width: 420px) { .x-holiday { grid-template-columns: 72px 1fr; gap: 14px; padding: 14px; } .x-holiday img { width: 72px; } }
     </style>
   </head>
   <body>
@@ -944,6 +951,15 @@ tr.is-highlight > :last-child { box-shadow: 12px 0 var(--fill-tertiary); }
               </div>
             </div>
           </div>
+          <aside class="x-holiday" aria-label="Coming for the holidays">
+            <img src="xmas-60s-cover.webp" alt="A &rsquo;60s Christmas large print word search and coloring book cover by Amia Khan" loading="lazy" width="420" height="548"/>
+            <div>
+              <p class="x-holiday__eyebrow">Coming for the holidays</p>
+              <h3>A &rsquo;60s Christmas</h3>
+              <p>A large-print word search and coloring book with 45 holiday puzzles and coloring pages: aluminum trees, bubble lights, the Wish Book, and holiday TV specials. A natural fit for December activity sessions.</p>
+              <p class="x-holiday__soon">Coming soon to Amazon</p>
+            </div>
+          </aside>
         </section>
 
         <section class="section" id="play" data-nav="Play free">
