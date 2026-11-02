@@ -118,6 +118,7 @@ footer a{color:var(--teal-d);font-weight:700}
  <h2>Coloring</h2>
  <div class="cards" id="cCards"></div>
  <h2>🎄 Christmas Pack</h2>
+ <p class="small">From the new large-print book <i>A '60s Christmas</i>. <a href="https://www.amazon.com/dp/B0HQ1M47DG" target="_blank" rel="noopener">Buy on Amazon</a></p>
  <div class="cards" id="xCards"></div>
  <div class="ownerbox" id="ownerBox">
   <h2 style="margin-top:0">📖 Own an Amia Khan book?</h2>
@@ -174,7 +175,7 @@ footer a{color:var(--teal-d);font-weight:700}
  <h2 id="dTitle">You found them all!</h2>
  <p class="lead" id="dPts"></p>
  <p class="lead" id="dPitch">Loved it? There are <b>45 more '60s puzzles</b> in the large-print book.</p>
- <div class="row"><a class="big" href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener" style="text-decoration:none">See the book on Amazon</a></div>
+ <div class="row"><a class="big" id="dBuy" href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener" style="text-decoration:none">See the book on Amazon</a></div>
  <div class="row"><button class="big teal" id="signupBtn">🎁 Free printable puzzle + 100 points</button></div>
  <div class="row"><button class="big ghost" id="dHome">Back to puzzles</button></div>
 </div></div>
@@ -202,7 +203,7 @@ const PICS=[
  {id:'jukebox',title:'The Jukebox',src:'jukebox.png',tag:'From the book · Sample',fromBook:true},
  {id:'recordplayer',title:'Record Player & Saddle Shoes',src:'recordplayer.png',tag:'Book owners bonus',locked:true}
 ];
-const AMAZON='https://www.amazon.com/dp/B0HPK67VBX', SIGNUP='https://amia-khan-books.kit.com/01ee4aeda0';
+const AMAZON='https://www.amazon.com/dp/B0HPK67VBX', XMAS_AMAZON='https://www.amazon.com/dp/B0HQ1M47DG', SIGNUP='https://amia-khan-books.kit.com/01ee4aeda0';
 const N=14,KEY='amk60s_v1';
 // ---------- state
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
@@ -275,7 +276,8 @@ function checkDone(){if(remaining().length||S.done[cur.id])return;S.done[cur.id]
  const mins=(Date.now()-S.started[cur.id])/6e4;if(mins<10){bonus+=5;txt+=', +5 speed bonus'}
  const earned=S.found[cur.id].length*10+bonus;addPts(bonus);
  $('dTitle').textContent=S.revealed[cur.id].length?'Puzzle complete!':'You found them all!';
- $('dPitch').innerHTML=cur.group==='xmas'?"Our new book <b>A '60s Christmas</b> is coming soon, with 45 holiday puzzles. Sign up below to hear when it's out. Until then, there are <b>45 '60s puzzles</b> in <i>Growing Up in the '60s</i>.":"Loved it? There are <b>45 more '60s puzzles</b> in the large-print book.";
+ $('dPitch').innerHTML=cur.group==='xmas'?"Our new book <b>A '60s Christmas</b> is out now on Amazon, with 45 large-print holiday puzzles and coloring pages.":"Loved it? There are <b>45 more '60s puzzles</b> in the large-print book.";
+ $('dBuy').href=cur.group==='xmas'?XMAS_AMAZON:AMAZON;$('dBuy').textContent=cur.group==='xmas'?'Buy on Amazon':'See the book on Amazon';
  $('dPts').innerHTML=`You earned <b>${earned} points</b> (${txt}). You now have <b>${S.points}</b>.`;
  setTimeout(()=>$('mDone').classList.add('on'),700)}
 let startCell=null,dragging=false,moved=false,tapStart=null;
@@ -368,7 +370,7 @@ $('tSize').onclick=e=>{si=(si+1)%3;brush=sizes[si][0];e.target.textContent='Brus
 $('tUndo').onclick=()=>{if(undo.length){pctx.putImageData(undo.pop(),0,0);queueSave()}};
 $('tClear').onclick=()=>{if(confirm('Start this picture over?')){pushUndo();pctx.fillStyle='#fff';pctx.fillRect(0,0,W,H);queueSave()}};
 $('tDone').onclick=()=>{saveColor();const first=!S.colorDone[pic.id];if(first){S.colorDone[pic.id]=true;save();addPts(20)}
- msg(first?'Beautiful! 🎨 +20 points':'Beautiful! 🎨','Your picture is saved here. <br><br><button class="big teal" id="dlBtn">Save picture to my device</button><br><br>Want more pages to color? The book has a coloring scene for every puzzle. <a href="'+AMAZON+'" target="_blank" rel="noopener">See it on Amazon</a>');
+ msg(first?'Beautiful! 🎨 +20 points':'Beautiful! 🎨','Your picture is saved here. <br><br><button class="big teal" id="dlBtn">Save picture to my device</button><br><br>Want more pages to color? The book has a coloring scene for every puzzle. <a href="'+(pic.group==='xmas'?XMAS_AMAZON:AMAZON)+'" target="_blank" rel="noopener">'+(pic.group==='xmas'?'Buy A \'60s Christmas on Amazon':'See it on Amazon')+'</a>');
  $('dlBtn').onclick=downloadPic};
 function downloadPic(){const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(paint,0,0);x.globalCompositeOperation='multiply';x.drawImage(art,0,0);
  c.toBlob(async b=>{const f=new File([b],'my-60s-coloring.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]})){try{await navigator.share({files:[f],title:'My \'60s coloring page'});return}catch(e){}}const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='my-60s-coloring.png';a.click()})}
