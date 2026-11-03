@@ -165,7 +165,7 @@ footer a{color:var(--teal-d);font-weight:700}
  <div class="stage" id="stage"><div class="inner" id="inner"><canvas id="paint"></canvas><canvas id="art"></canvas></div></div>
 </section>
 </main>
-<footer>Love these? There are 45 more '60s puzzles and coloring pages in the large-print book. <a href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener">See it on Amazon</a></footer>
+<footer>Love these? There are 45 more '60s puzzles and coloring pages in the large-print book. <a href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener">See it on Amazon</a> (or the <a href="https://www.amazon.com/dp/B0HQ4HWLG8" target="_blank" rel="noopener">hardcover gift edition, $22.99</a>)</footer>
 
 <div id="toast"></div>
 <div id="a2hs"><p>📲 <b>Keep your points safe:</b> tap the Share button <b>⎙</b>, then <b>Add to Home Screen</b>. The game opens like an app.</p><button class="tb" id="a2hsX">Got it</button></div>
@@ -176,6 +176,7 @@ footer a{color:var(--teal-d);font-weight:700}
  <p class="lead" id="dPts"></p>
  <p class="lead" id="dPitch">Loved it? There are <b>45 more '60s puzzles</b> in the large-print book.</p>
  <div class="row"><a class="big" id="dBuy" href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener" style="text-decoration:none">See the book on Amazon</a></div>
+ <div class="row"><a class="big ghost" id="dHc" href="https://www.amazon.com/dp/B0HQ4HWLG8" target="_blank" rel="noopener" style="text-decoration:none">Hardcover gift edition, $22.99</a></div>
  <div class="row"><button class="big teal" id="signupBtn">🎁 Free printable puzzle + 100 points</button></div>
  <div class="row"><button class="big ghost" id="dHome">Back to puzzles</button></div>
 </div></div>
@@ -187,7 +188,7 @@ footer a{color:var(--teal-d);font-weight:700}
  <input type="text" id="ownerIn" placeholder="Type the title of puzzle 12" autocomplete="off">
  <p class="err" id="ownerErr"></p>
  <div class="row"><button class="big" id="ownerGo">Unlock</button><button class="big ghost" id="ownerX">Not now</button></div>
- <p class="small" style="margin-top:14px">Don't have the book yet? <a href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener">See it on Amazon</a></p>
+ <p class="small" style="margin-top:14px">Don't have the book yet? <a href="https://www.amazon.com/dp/B0HPK67VBX" target="_blank" rel="noopener">See it on Amazon</a> (or the <a href="https://www.amazon.com/dp/B0HQ4HWLG8" target="_blank" rel="noopener">hardcover gift edition, $22.99</a>)</p>
 </div></div>
 
 <div class="modal" id="mMsg"><div class="sheet"><h2 id="msgT"></h2><p class="lead" id="msgB"></p><div class="row"><button class="big teal" id="msgX">OK</button></div></div></div>
@@ -203,7 +204,7 @@ const PICS=[
  {id:'jukebox',title:'The Jukebox',src:'jukebox.png',tag:'From the book · Sample',fromBook:true},
  {id:'recordplayer',title:'Record Player & Saddle Shoes',src:'recordplayer.png',tag:'Book owners bonus',locked:true}
 ];
-const AMAZON='https://www.amazon.com/dp/B0HPK67VBX', XMAS_AMAZON='https://www.amazon.com/dp/B0HQ1M47DG', SIGNUP='https://amia-khan-books.kit.com/01ee4aeda0';
+const AMAZON='https://www.amazon.com/dp/B0HPK67VBX', XMAS_AMAZON='https://www.amazon.com/dp/B0HQ1M47DG', AMAZON_HC='https://www.amazon.com/dp/B0HQ4HWLG8', XMAS_AMAZON_HC='https://www.amazon.com/dp/B0HQ4KPJFK', SIGNUP='https://amia-khan-books.kit.com/01ee4aeda0';
 const N=14,KEY='amk60s_v1';
 // ---------- state
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){S={}}
@@ -277,7 +278,7 @@ function checkDone(){if(remaining().length||S.done[cur.id])return;S.done[cur.id]
  const earned=S.found[cur.id].length*10+bonus;addPts(bonus);
  $('dTitle').textContent=S.revealed[cur.id].length?'Puzzle complete!':'You found them all!';
  $('dPitch').innerHTML=cur.group==='xmas'?"Our new book <b>A '60s Christmas</b> is out now on Amazon, with 45 large-print holiday puzzles and coloring pages.":"Loved it? There are <b>45 more '60s puzzles</b> in the large-print book.";
- $('dBuy').href=cur.group==='xmas'?XMAS_AMAZON:AMAZON;$('dBuy').textContent=cur.group==='xmas'?'Buy on Amazon':'See the book on Amazon';
+ $('dBuy').href=cur.group==='xmas'?XMAS_AMAZON:AMAZON;$('dHc').href=cur.group==='xmas'?XMAS_AMAZON_HC:AMAZON_HC;$('dBuy').textContent=cur.group==='xmas'?'Buy on Amazon':'See the book on Amazon';
  $('dPts').innerHTML=`You earned <b>${earned} points</b> (${txt}). You now have <b>${S.points}</b>.`;
  setTimeout(()=>$('mDone').classList.add('on'),700)}
 let startCell=null,dragging=false,moved=false,tapStart=null;
